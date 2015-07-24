@@ -1,0 +1,56 @@
+body {
+  background-color: #828282;
+  color: black;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+span {
+  color: white;
+  font-family: Courier;
+}
+
+div {
+
+  background-color: #0C87C4;
+  width: 100px;
+  height: 35px;
+  border-radius: 5px;
+  box-shadow: 0px 5px 10px #3d3d3d;
+  margin-bottom: 5px;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+#buy {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  top: 8px;
+  color: white;
+}
+
+#cookie {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: brown;
+  border-radius: 100%;
+  width: 130px;
+  height: 130px;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+#cookieCount {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  top: 140px;
+}
