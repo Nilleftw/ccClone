@@ -3,28 +3,43 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/main.js"></script>
+        <title>Cookie Clicker Clone</title>
 	</head>
-	<body>
-        <div id="cookie"><p id="cookieCount">Cookies: <span id="cookieTotal">0</span></p></div>
-        <br />
-           <!-- Cookies: <span id="cookieTotal">0</span> -->
-        <br />
+<body>
 
-        <div id="cursor"><p id="buy">Buy cursor</p></div>
+    <div class="sidebar">
+        <div class="sideButton" id="cursor"><p id="buy">Buy cursor</p></div>
             Cursors: <span id="cursors">0</span><br />
             Cost: <span id="cursorCost">10</span><br />
     <br />
-        <div id="baker"><p id="buy">Buy baker</p></div>
+        <div class="sideButton" id="baker"><p id="buy">Buy baker</p></div>
             Bakers: <span id="bakers">0</span><br />
             Cost: <span id="bakerCost">50</span><br />
-        <br />
+    <br />
+        <div class="sideButton" id="grandma"><p id="buy">Buy grandma</p></div>
+            Grandmas: <span id="grandmas">0</span><br />
+            Cost: <span id="grandmaCost">100</span><br />
+    <br />
             Cookies per Second: <span id="cps">0</span><br />
 
+<!--         <p id="savedGame"></p>
+        <div class="sideButton" id="save"><p id="buy">Save</p></div>
+        <div class="sideButton" id="load"><p id="buy">Load</p></div> -->
+        <!-- <div id="debug">Debug</div> -->
+        <div>
+            <input type="button" value="10" id="10"></input>
+            <input type="button" value="100" id="100"></input>
+            <input type="button" value="1000" id="1000"></input>
+            <input type="button" value="Clear" id="cookienull"></input>
+            <input type="button" value="Activate" id="activate"></input>
+        </div>
+    </div>
 
+    <div class="cookieContainer">
+        <div id="cookie"></div>
+        <p id="cookieCount">Cookies: <br><span id="cookieTotal">0</span></p>
+    </div>
 
-        <p id="savedGame"></p>
-        <div id="save"><p id="buy">Save</p></div>
-        <div id="load"><p id="buy">Load</p></div>
 
 
         <script type="text/javascript" src="js/game.js"></script>

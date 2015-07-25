@@ -1,93 +1,128 @@
+var cps, 
+    cookies, 
+    cursors, 
+    cursorCost, 
+    bakers, 
+    bakerCost, 
+    nextCost;
+
+/* Skill object template
+
+var OBJECTNAME = {
+  skill:"SKILL_NAME",           // Name for your skill
+  idDiv:"#HTML_DIV_ID",         // Id name for the div
+  idSpan:"HTML_SKILL_TOTAL",    // Total number of owned.. things
+  idCost:"HTML_COST_SPAN",      // Holder for skill cost (updates)
+  baseCost:10,                  // Does not change
+  cost:10,                      // Multiplies for each purchase
+  nextCost:0,                   // Cost of next skill purchase
+  total:0,                      // Number of owned things
+  autoAdd:1                     // Amount of cookies added automatically
+};
+
+HTML sidebar button. 
+
+<div class="sideButton" id="HTML_DIV_ID"><p id="buy">Buy SKILL_NAME</p></div>
+  SKILL_NAME+S: <span id="IDSPAN">0</span><br />
+  Cost: <span id="cursorCost">10</span><br />
+*/
+
+// Skill objects
+
+var cursOb = {
+  skill:"Cursor",
+  idDiv:"#cursor",
+  idSpan:"cursors",
+  idCost:"cursorCost",
+  baseCost:10,
+  cost:10,
+  nextCost:0,
+  total:0,
+  autoAdd:1
+};
+
+var bakeOb = {
+  skill:"Baker",
+  idDiv:"#baker",
+  idSpan:"bakers",
+  idCost:"bakerCost",
+  baseCost:50,
+  cost:50,
+  nextCost:0,
+  total:0,
+  autoAdd:2
+};
+
+var grandOb = {
+  skill:"Grandma",
+  idDiv:"#grandma",
+  idSpan:"grandmas",
+  idCost:"grandmaCost",
+  baseCost:100,
+  cost:100,
+  nextCost:0,
+  total:0,
+  autoAdd:5
+};
+
 // Cookies per second
-var cps = 0;
+cps = 0;
 
 // Cookie spam button
-var cookies = 0;
+cookies = 0;
 
 function cookieClick(number){
   cookies = cookies + number;
   document.getElementById("cookieTotal").innerHTML = cookies;
-};
-
-// Cursor auto baker
-var cursors = 0;
-
-function buyCursor(){
-  var cursorCost = Math.floor(10 * Math.pow(1.1,cursors));      //works out the cost of this cursor
-  if (cookies >= cursorCost){                                   //checks that the player can afford the cursor
-    cursors = cursors + 1;                                      //increases number of cursors
-    cookies = cookies - cursorCost;                             //removes the cookies spent
-    cps += 1;                                                   //    my own cookie per second counter
-    document.getElementById("cursors").innerHTML = cursors;     //updates the number of cursors for the user
-    document.getElementById("cookieTotal").innerHTML = cookies; //updates the number of cookies for the user
-    document.getElementById("cps").innerHTML = cps;             //updates the number of cookies per second
-  };
-  var nextCost = Math.floor(10 * Math.pow(1.1,cursors));        //works out the cost of the next cursor
-  document.getElementById('cursorCost').innerHTML = nextCost;   //updates the cursor cost for the user
-};
-
-window.setInterval(function() {
-  cookieClick(cursors);
-}, 1000);
-
-
-// Baker auto baker
-var bakers = 0;
-
-function buyBaker(){
-  var bakerCost = Math.floor(50 * Math.pow(1.1,bakers));
-  if (cookies >= bakerCost){
-    bakers += 1;
-    cookies = cookies - bakerCost;
-    cps += 2;
-    document.getElementById("bakers").innerHTML = bakers;
-    document.getElementById("cookieTotal").innerHTML = cookies;
-    document.getElementById("cps").innerHTML = cps;
-  }
-  var nextCost = Math.floor(50 * Math.pow(1.1,bakers));
-  document.getElementById('bakerCost').innerHTML = nextCost;
-};
-
-window.setInterval(function() {
-  cookieClick(2 * bakers);
-}, 1000);
-
-/* Cookies (not eadible)
-
-function setCookie(cookieName,value) {
-  expiry = new Date();
-  expiry.setTime(new Date().getTime() + (10*60*1000));
-  var cValue=escape(btoa(JSON.stringify(value))) +
-      "; expires="+expiry.toUTCString();
-  document.cookie=cookieName + "=" + cValue;
 }
 
-function getCookie(cookieName) {
-  var cValue = document.cookie;
-  var cStart = cValue.indexOf(" " + cookieName + "=");
-  if (cStart == -1) {
-    cStart = cValue.indexOf(cookieName + "=");
+// Modular skill buyer, takes object as input
+
+function buyModular(object){
+  if (cookies >= object.cost){                                                      //checks that the player can afford the cursor
+    object.total += 1;                                                              //increases number of cursors
+    cookies -= object.cost;                                                         //removes the cookies spent
+    cps += object.autoAdd;                                                          //    my own cookie per second counter
+    document.getElementById(object.idSpan).innerHTML = object.total;                //updates the number of cursors for the user
+    document.getElementById("cookieTotal").innerHTML = cookies;                     //updates the number of cookies for the user
+    document.getElementById("cps").innerHTML = cps;                                 //updates the number of cookies per second
+    object.cost = Math.floor(object.baseCost * Math.pow(1.1,object.total));         //works out the cost of this cursor
   }
-  if (cStart == -1) return false;
-  cStart = cValue.indexOf("=", cStart) + 1;
-  var cEnd = cValue.indexOf(";", cStart);
-  if (cEnd == -1) {
-    cEnd = cValue.length;
-  }
-  cValue = atob(unescape(cValue.substring(cStart,cEnd)));
-  return JSON.parse(cValue);
+  object.nextCost = Math.floor(object.baseCost * Math.pow(1.1,object.total));       //works out the cost of the next cursor
+  document.getElementById(object.idCost).innerHTML = object.nextCost;               //updates the cursor cost for the user
 }
 
-// Save file
-var player = {
-  cookies: 0,
-  cursors: 0,
-  bakers: 0,
-  cps: 0,
+function autoBaker(object) {                                                        //adds one cookie per cursor each second
+  window.setInterval(function() {
+  cookieClick(object.total * object.autoAdd);
+  }, 1000)
 };
 
-function updateView() {
-  var e2 = document.getElementById("cookieTotal");
-  e2.innerHTML =
 
-*/
+// Button disabler, also takes object as input
+
+function buyDisable(skill){
+  window.setInterval(function() {
+    if (cookies >= skill.cost){
+      $(skill.idDiv).addClass("sideButton");
+      $(skill.idDiv).removeClass("inactiveButton");
+    }
+    else{
+      $(skill.idDiv).addClass("inactiveButton");
+      $(skill.idDiv).removeClass("sideButton");
+    }
+  }, 100);
+}
+
+// Debug
+
+function debugClear() {
+  cookies = 0,
+  document.getElementById("cps").innerHTML = 0,
+  cursOb.total = 0, document.getElementById("cursors").innerHTML = cursOb.total, 
+                    document.getElementById("cursorCost").innerHTML = cursOb.baseCost,
+  bakeOb.total = 0, document.getElementById("bakers").innerHTML = bakeOb.total,
+                    document.getElementById("bakerCost").innerHTML = bakeOb.baseCost,
+  grandOb.total = 0, document.getElementById("grandmas").innerHTML = grandOb.total, 
+                    document.getElementById("grandmaCost").innerHTML = grandOb.baseCost
+}
